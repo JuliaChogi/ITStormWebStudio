@@ -1,0 +1,27 @@
+@import "variables";
+
+@mixin head-lora-38 {
+  font-family: 'Lora', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 38px;
+  color: $light-blue-main-color;
+}
+
+@mixin head-montserrat-20 {
+  font-family: 'Montserrat', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 130%;
+  color: $light-blue-main-color;
+}
+
+@mixin link-montserrat-blue-underline {
+  font-family: 'Montserrat', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  text-decoration-line: underline;
+  color: $light-blue-main-color;
+}

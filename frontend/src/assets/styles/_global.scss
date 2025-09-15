@@ -1,0 +1,95 @@
+@import "variables";
+@import "mixins";
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+}
+
+.container {
+  max-width: $container-width;
+  margin: 0 auto;
+}
+
+.navigation {
+  nav ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+
+    li {
+      list-style: none;
+      margin-right: 30px;
+      &:last-child {
+        margin-right: 0;
+      }
+
+      a {
+        font-size: 16px;
+        cursor: pointer;
+        text-decoration: none;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 500;
+        color: $darker-blue-text-color;
+
+        &.active {
+          color: $light-blue-main-color;
+        }
+      }
+    }
+  }
+}
+.main-title-blue {
+  @include head-lora-38;
+}
+
+.btn-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $light-blue-main-color;
+  border-radius: 5px;
+  font-family: 'Montserrat', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 130%;
+  color: #FFFFFF;
+  box-sizing: border-box;
+  cursor: pointer;
+  border: 0;
+}
+
+input {
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 130%;
+  background: #FFFFFF;
+  border: 2px solid $light-blue-main-color;
+  border-radius: 3px;
+  padding: 17px 20px;
+  color: $light-blue-main-color;
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: #A8ABA7;
+  }
+}
+
+.mat-menu-item {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+
+  a {
+    color: $light-blue-main-color;
+  }
+
+}

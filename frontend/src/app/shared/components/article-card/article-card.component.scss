@@ -1,0 +1,61 @@
+@import "../../../../assets/styles/variables";
+@import "../../../../assets/styles/mixins";
+
+.article-card {
+  height: 571px;
+  width: 292px;
+  box-sizing: border-box;
+  position: relative;
+
+  .article-card-category {
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    text-align: center;
+    color: $light-blue-main-color;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    padding: 10px 18px;
+    position: absolute;
+    top: 10px;
+    right: 9px;
+    z-index: 3;
+  }
+
+  .article-card-image {
+    height: 291px;
+    width: 291px;
+    border-radius: 5px;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .article-card-title {
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 130%;
+    color: $light-blue-main-color;
+    margin-top: 15px;
+    margin-bottom: 20px;
+  }
+
+  .article-card-description {
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 130%;
+    color: $darker-blue-text-color;
+  }
+
+  .article-card-detail {
+    @include link-montserrat-blue-underline;
+    cursor: pointer;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+}
