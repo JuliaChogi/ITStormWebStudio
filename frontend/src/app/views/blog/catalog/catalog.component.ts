@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router, Params } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { ArticleService } from '../../../shared/services/article.service';
-import { ArticleType } from '../../../../types/article.type';
-import { ArticleCategoryType } from '../../../../types/article-category.type';
-import { ActiveParamsUtil } from '../../../shared/utils/active-params.util';
-import { ActiveParamsType } from '../../../../types/active-params.type';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute, Router, Params} from '@angular/router';
+import {debounceTime, Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {ArticleService} from '../../../shared/services/article.service';
+import {ArticleType} from '../../../../types/article.type';
+import {ArticleCategoryType} from '../../../../types/article-category.type';
+import {ActiveParamsUtil} from '../../../shared/utils/active-params.util';
+import {ActiveParamsType} from '../../../../types/active-params.type';
 
 @Component({
   selector: 'app-catalog',
@@ -30,7 +30,8 @@ export class CatalogComponent implements OnInit, OnDestroy {
     private articleService: ArticleService,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.articleService.getArticleCategories()
@@ -64,7 +65,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
     };
 
     this.articleService.getArticles(params)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntil(this.destroy$), debounceTime(500))
       .subscribe({
         next: response => {
           this.articles = response.items;
@@ -134,12 +135,13 @@ export class CatalogComponent implements OnInit, OnDestroy {
   }
 
   get pagesArray(): number[] {
-    return Array.from({ length: this.pages }, (_, i) => i + 1);
+    return Array.from({length: this.pages}, (_, i) => i + 1);
   }
 
   closeDropdown() {
     this.dropdownOpen = false;
   }
+
   openDropdown() {
     this.dropdownOpen = true;
   }

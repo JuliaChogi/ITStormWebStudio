@@ -6,19 +6,19 @@
         <nav>
           <ul>
             <li>
-              <a routerLink="#" class="active">Услуги</a>
+              <a routerLink="/" fragment="services">Услуги</a>
             </li>
             <li>
-              <a routerLink="#">О нас</a>
+              <a routerLink="/" fragment="about">О нас</a>
             </li>
             <li>
-              <a routerLink="#">Статьи</a>
+              <a routerLink="/blog" routerLinkActive = 'active'>Статьи</a>
             </li>
             <li>
-              <a routerLink="#">Отзывы</a>
+              <a routerLink="/" fragment="opinions">Отзывы</a>
             </li>
             <li>
-              <a routerLink="#">Контакты</a>
+              <a routerLink="/" fragment="contact-info">Контакты</a>
             </li>
           </ul>
         </nav>
@@ -33,13 +33,13 @@
       <div class="footer-block footer-phone">
         <div class="footer-block-title">Телефон</div>
         <div class="footer-block-content">
-          <span>+7 (499) 343-13-34</span>
-          <button class="button btn-main">Перезвоните мне</button>
+          <a href="tel:+74993431334">+7 (499) 343-13-34</a>
+          <button class="button btn-main" (click)="openConsultation()">Перезвоните мне</button>
         </div>
       </div>
       <div class="footer-block footer-email">
         <div class="footer-block-title">E-mail</div>
-        <div class="footer-block-content">info@itstorm.com</div>
+        <div class="footer-block-content"><a href="mailto:info@itstorm.com">info@itstorm.com</a></div>
       </div>
       <div class="footer-block footer-socials">
         <div class="footer-block-title">Мы в социальных сетях:</div>

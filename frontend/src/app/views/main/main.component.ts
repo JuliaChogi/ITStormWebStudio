@@ -2,13 +2,17 @@ import {Component, OnInit} from '@angular/core';
 import {OwlOptions} from "ngx-owl-carousel-o";
 import {ArticleService} from "../../shared/services/article.service";
 import {ArticleType} from "../../../types/article.type";
+import {ModalService} from "../../shared/services/modal.service";
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })
+
+
 export class MainComponent implements OnInit {
+
 
   customOptions: OwlOptions = {
     loop: true,
@@ -59,7 +63,8 @@ export class MainComponent implements OnInit {
 
   topArticles: ArticleType[] = [];
 
-  constructor(private articleService: ArticleService) {
+  constructor(private articleService: ArticleService,
+              private modalService: ModalService) {
   }
 
   ngOnInit(): void {
@@ -70,4 +75,14 @@ export class MainComponent implements OnInit {
       })
   }
 
+  openOrder(service: string) {
+    this.modalService.open('order', { service });
+    console.log('Открыта модалка order, service =', service);
+  }
+
+  openConsultation() {
+    this.modalService.open('consultation');
+  }
 }
+
+

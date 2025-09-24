@@ -1,0 +1,118 @@
+@import "../../../../assets/styles/variables";
+@import "../../../../assets/styles/mixins";
+
+.article {
+  padding-top: 80px;
+  padding-bottom: 120px;
+
+  .container {
+    .article-header {
+      .article-header-breadcrumbs {
+        margin-bottom: 60px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 400;
+        font-size: 16px;
+        color: #B9D5FD;
+        cursor: pointer;
+
+        span {
+          font-family: 'Montserrat', sans-serif;
+          font-weight: 500;
+          font-size: 16px;
+          color: $light-blue-main-color;
+          cursor: auto;
+        }
+      }
+
+      .article-header-main {
+        display: flex;
+        gap: 106px;
+        align-items: flex-start;
+
+        .article-header-main-description {
+          width: 607px;
+
+          .article-header-main-description-title {
+            @include head-lora-38;
+            margin-bottom: 40px;
+          }
+
+          .article-header-main-description-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            font-size: 20px;
+            line-height: 130%;
+            color: $light-blue-main-color;
+
+          }
+        }
+
+        .article-header-main-image {
+          width: 527px;
+          height: 320px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          border-radius: 5px;
+
+          img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+          }
+
+        }
+      }
+    }
+    .article-content-block {
+      display: flex;
+      gap: 130px;
+      .article-content {
+        width: 818px;
+        padding-top: 60px;
+
+        .article-text {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        .article-socials {
+          display: flex;
+          margin-top: 60px;
+
+          span {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 130%;
+            color: $light-blue-main-color;
+            margin-right: 20px;
+          }
+
+          a {
+            margin-right: 13px;
+          }
+        }
+      }
+      .article-aside {
+        padding-top: 120px;
+
+         span {
+           display: block;
+           margin-bottom: 20px;
+           font-family: 'Lora', sans-serif;
+           font-weight: 400;
+           font-size: 26px;
+           color: $light-blue-main-color;
+         }
+        .related-articles {
+          display: flex;
+          flex-direction: column;
+          gap: 60px;
+        }
+      }
+    }
+  }
+}

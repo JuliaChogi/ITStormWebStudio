@@ -23,7 +23,15 @@
       gap: 60px;
       margin-bottom: 6px;
 
-      .footer-phone {
+      .footer-phone, .footer-email {
+        a {
+          font-style: normal;
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 130%;
+          color: $darker-blue-text-color;
+          text-decoration: none;
+        }
 
         .footer-block-content {
 

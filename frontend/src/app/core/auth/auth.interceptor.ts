@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, finalize, switchMap } from 'rxjs/operators';
-import { AuthService } from './auth.service';
-import { Router } from '@angular/router';
+import {Injectable} from '@angular/core';
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {Observable, throwError} from 'rxjs';
+import {catchError, finalize, switchMap} from 'rxjs/operators';
+import {AuthService} from './auth.service';
+import {Router} from '@angular/router';
 // import { LoaderService } from '../../shared/services/loader.service'; // loader НЕ ЗАБЫТЬ
-import { DefaultResponseType } from '../../../types/default-response.type';
-import { LoginResponseType } from '../../../types/login-response.type';
+import {DefaultResponseType} from '../../../types/default-response.type';
+import {LoginResponseType} from '../../../types/login-response.type';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -15,16 +15,19 @@ export class AuthInterceptor implements HttpInterceptor {
     private authService: AuthService,
     private router: Router,
     // private loaderService: LoaderService // loader
-  ) {}
+  ) {
+  }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // this.loaderService.show(); // loader
 
     const tokens = this.authService.getTokens();
     const authReq = tokens?.accessToken
-      ? req.clone({ setHeaders: {
+      ? req.clone({
+        setHeaders: {
           'x-auth': tokens.accessToken
-        } })
+        }
+      })
       : req;
 
     return next.handle(authReq).pipe(
@@ -55,9 +58,11 @@ export class AuthInterceptor implements HttpInterceptor {
 
         this.authService.setTokens(refreshResult.accessToken, refreshResult.refreshToken);
 
-        const newReq = req.clone({ setHeaders: {
+        const newReq = req.clone({
+          setHeaders: {
             'x-auth': refreshResult.accessToken
-          } });
+          }
+        });
         return next.handle(newReq);
       }),
       catchError(error => {

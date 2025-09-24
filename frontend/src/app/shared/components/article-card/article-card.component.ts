@@ -8,11 +8,12 @@ import {environment} from "../../../../environments/environment";
   styleUrls: ['./article-card.component.scss']
 })
 export class ArticleCardComponent implements OnInit {
-@Input() article!: ArticleType;
-serverStaticPath = environment.serverStaticPath;
-  constructor() { }
+  @Input() article!: ArticleType;
+  serverStaticPath = environment.serverStaticPath;
+
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
-
 }

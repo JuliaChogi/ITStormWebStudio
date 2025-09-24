@@ -1,7 +1,7 @@
 @import "variables";
 @import "mixins";
 
-html, body {
+html, body, h1, h3, p {
   margin: 0;
   padding: 0;
   font-family: 'Montserrat', sans-serif;
@@ -11,6 +11,26 @@ html, body {
 .container {
   max-width: $container-width;
   margin: 0 auto;
+}
+
+h1 {
+  @include head-lora-38;
+}
+
+h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 130%;
+  color: $light-blue-main-color;
+  margin-top: 20px;
+}
+
+p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  line-height: 130%;
+  color: $darker-blue-text-color;
 }
 
 .navigation {
@@ -43,6 +63,7 @@ html, body {
 }
 .main-title-blue {
   @include head-lora-38;
+
 }
 
 .btn-main {
@@ -61,6 +82,10 @@ html, body {
   cursor: pointer;
   border: 0;
 }
+
+input[type="text" i] {
+  padding-block: 0;
+  padding-inline: 0;}
 
 input {
   box-sizing: border-box;

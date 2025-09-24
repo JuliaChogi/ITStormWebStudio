@@ -3,8 +3,8 @@ import {AuthService} from "../../../core/auth/auth.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
 import {UserService} from "../../../core/auth/user.service";
-import {Subject, combineLatest, of} from "rxjs";
-import {switchMap, takeUntil, tap} from "rxjs/operators";
+import {Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
   selector: 'app-header',

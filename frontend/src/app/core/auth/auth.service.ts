@@ -16,7 +16,6 @@ export class AuthService {
   public refreshTokenKey: string = 'refreshToken';
   public userIdKey: string = 'userId';
   public isLogged$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(!!localStorage.getItem(this.accessTokenKey));
-
   // public isLogged$: Subject<boolean> = new Subject<boolean>();
   private isLogged: boolean = false;
 
@@ -37,7 +36,6 @@ export class AuthService {
     });
   }
 
-  //Вынесена функция во избежание дублирования кода login.component.ts и login.component.ts
   public handleAuthResponse(
     data: DefaultResponseType | LoginResponseType,
     snackBar: MatSnackBar,
@@ -86,10 +84,6 @@ export class AuthService {
     return throwError(() => new Error('Can not use token'));
   }
 
-  public getIsLoggedIn(): boolean {
-    return this.isLogged;
-  }
-
   public setTokens(accessToken: string, refreshToken: string): void {
     localStorage.setItem(this.accessTokenKey, accessToken);
     localStorage.setItem(this.refreshTokenKey, refreshToken);
@@ -109,10 +103,6 @@ export class AuthService {
       accessToken: localStorage.getItem(this.accessTokenKey),
       refreshToken: localStorage.getItem(this.refreshTokenKey)
     };
-  }
-
-  get userId(): null | string {
-    return localStorage.getItem(this.userIdKey);
   }
 
   set userId(id: string | null) {

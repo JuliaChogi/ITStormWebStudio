@@ -6,10 +6,9 @@
   width: 292px;
   box-sizing: border-box;
   position: relative;
+  font-family: 'Montserrat', sans-serif;
 
   .article-card-category {
-    font-family: 'Montserrat', sans-serif;
-    font-style: normal;
     font-weight: 400;
     font-size: 11px;
     text-align: center;
@@ -32,8 +31,6 @@
   }
 
   .article-card-title {
-    font-family: 'Montserrat', sans-serif;
-    font-style: normal;
     font-weight: 500;
     font-size: 20px;
     line-height: 130%;
@@ -43,8 +40,6 @@
   }
 
   .article-card-description {
-    font-family: 'Montserrat', sans-serif;
-    font-style: normal;
     font-weight: 400;
     font-size: 14px;
     line-height: 130%;

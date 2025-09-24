@@ -13,12 +13,15 @@ import {AuthInterceptor} from "./core/auth/auth.interceptor";
 import {CarouselModule} from "ngx-owl-carousel-o";
 import {SharedModule} from "./shared/shared.module";
 import {CommonModule} from "@angular/common";
+import {ModalComponent} from "./shared/components/modal/modal.component";
+import { PolicyComponent } from './views/policy/policy.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainComponent
+    MainComponent,
+    PolicyComponent,
   ],
   imports: [
     CommonModule,
@@ -30,7 +33,8 @@ import {CommonModule} from "@angular/common";
     MatMenuModule,
     MatButtonModule,
     MatSnackBarModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+
   ],
   providers: [
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},

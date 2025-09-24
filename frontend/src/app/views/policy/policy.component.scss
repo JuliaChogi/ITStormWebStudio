@@ -1,0 +1,29 @@
+@import "../../../assets/styles/variables";
+@import "../../../assets/styles/mixins";
+
+.policy {
+  padding: 0 0 60px 0;
+  .container {
+    width: 812px;
+    .policy-title {
+      @include head-lora-38;
+      text-align: center;
+      padding: 10px 0;
+    }
+    .policy-text {
+      font-family: 'Montserrat', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 130%;
+      color: $darker-blue-text-color;
+      padding: 10px 0;
+
+      span {
+        font-size: 18px;
+        text-align: center;
+        color: $light-blue-main-color;
+      }
+    }
+  }
+}

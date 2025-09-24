@@ -7,6 +7,10 @@ import {LayoutComponent} from "./layout/layout.component";
 import {RouterModule} from "@angular/router";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatButtonModule} from "@angular/material/button";
+import {ArticleDescriptionShortenerPipe} from './pipes/article-description-shortener.pipe';
+import {ModalComponent} from './components/modal/modal.component';
+import {ReactiveFormsModule} from "@angular/forms";
+import {HttpClientModule} from "@angular/common/http";
 
 
 @NgModule({
@@ -14,13 +18,17 @@ import {MatButtonModule} from "@angular/material/button";
     ArticleCardComponent,
     HeaderComponent,
     LayoutComponent,
-    FooterComponent
+    FooterComponent,
+    ArticleDescriptionShortenerPipe,
+    ModalComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
     MatMenuModule,
-    MatButtonModule
+    MatButtonModule,
+    ReactiveFormsModule,
+
   ],
   exports: [
     ArticleCardComponent,
@@ -29,7 +37,9 @@ import {MatButtonModule} from "@angular/material/button";
     LayoutComponent,
     RouterModule,
     MatMenuModule,
-    MatButtonModule
+    MatButtonModule,
+    ArticleDescriptionShortenerPipe,
+    ModalComponent
   ]
 })
 export class SharedModule {
