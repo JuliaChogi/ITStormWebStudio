@@ -1,16 +1,16 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalService, ModalType } from '../../services/modal.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import {environment} from "../../../../environments/environment";
+import { environment } from "../../../../environments/environment";
 
 @Component({
   selector: 'app-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss']
 })
-export class ModalComponent implements OnDestroy {
+export class ModalComponent implements OnInit, OnDestroy {
   modalType: ModalType = null;
   payload: any = null;
   form: FormGroup | null = null;
@@ -31,8 +31,9 @@ export class ModalComponent implements OnDestroy {
     private modalService: ModalService,
     private fb: FormBuilder,
     private http: HttpClient
-  ) {
+  ) {}
 
+  ngOnInit() {
     this.subs.add(
       this.modalService.modalType$.subscribe(type => {
         this.modalType = type;
@@ -45,7 +46,8 @@ export class ModalComponent implements OnDestroy {
         this.payload = p;
         if (this.form && this.modalType === 'order') {
           const svc = p?.service ?? '';
-          this.form.patchValue({ service: svc });
+          this.form.get('service')?.markAsDirty();
+          this.form.get('service')?.markAsTouched();
         }
       })
     );
@@ -63,21 +65,28 @@ export class ModalComponent implements OnDestroy {
     this.submitError = '';
     this.isSubmitting = false;
 
+    const namePattern = /^[А-ЯЁа-яё]+(?: [А-ЯЁа-яё]+)*$/;
+    const phonePattern = /^\d[\d ]{10,}$/;
+
     if (this.modalType === 'order') {
       const defaultService = this.payload?.service ?? '';
       this.form = this.fb.group({
-        service: [defaultService, Validators.required],
-        name: ['', Validators.required],
-        phone: ['', Validators.required]
+        service: [defaultService, [Validators.required]],
+        name: ['', [Validators.required, Validators.pattern(namePattern)]],
+        phone: ['', [Validators.required, Validators.pattern(phonePattern)]]
       });
     } else if (this.modalType === 'consultation') {
       this.form = this.fb.group({
-        name: ['', Validators.required, Validators.pattern(/^[А-ЯЁ][а-яё]*(?: [А-ЯЁ][а-яё]*)*$/)],
-        phone: ['', Validators.required, Validators.pattern(/^\+?\s*(?:\d[\s-]*){11}$/)]
+        name: ['', [Validators.required, Validators.pattern(namePattern)]],
+        phone: ['', [Validators.required, Validators.pattern(phonePattern)]]
       });
     } else {
       this.form = null;
     }
+    this.subs.add(
+      this.form?.valueChanges.subscribe(() => {
+      })
+    );
   }
 
   onSubmit() {
@@ -107,14 +116,14 @@ export class ModalComponent implements OnDestroy {
       next: (res: any) => {
         this.isSubmitting = false;
         if (res && res.error) {
-          this.submitError = 'произошла ошибка при отправке формы, попробуйте еще раз.';
+          this.submitError = 'Произошла ошибка при отправке формы, попробуйте еще раз.';
         } else {
           this.modalService.open('success');
         }
       },
       error: () => {
         this.isSubmitting = false;
-        this.submitError = 'произошла ошибка при отправке формы, попробуйте еще раз.';
+        this.submitError = 'Произошла ошибка при отправке формы, попробуйте еще раз.';
       }
     });
   }

@@ -76,6 +76,15 @@
           display: flex;
           flex-direction: column;
           gap: 20px;
+          ul {
+            li {
+              font-family: 'Montserrat', sans-serif;
+              font-weight: 400;
+              font-size: 20px;
+              line-height: 130%;
+              color: $light-blue-main-color;
+            }
+          }
         }
 
         .article-socials {
@@ -114,5 +123,6 @@
         }
       }
     }
+
   }
 }

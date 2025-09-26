@@ -33,6 +33,18 @@ p {
   color: $darker-blue-text-color;
 }
 
+.article {
+  ul {
+    li {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 130%;
+      color: $light-blue-main-color;
+    }
+  }
+}
+
 .navigation {
   nav ul {
     margin: 0;
@@ -42,6 +54,7 @@ p {
     li {
       list-style: none;
       margin-right: 30px;
+
       &:last-child {
         margin-right: 0;
       }
@@ -61,6 +74,7 @@ p {
     }
   }
 }
+
 .main-title-blue {
   @include head-lora-38;
 
@@ -85,7 +99,8 @@ p {
 
 input[type="text" i] {
   padding-block: 0;
-  padding-inline: 0;}
+  padding-inline: 0;
+}
 
 input {
   box-sizing: border-box;

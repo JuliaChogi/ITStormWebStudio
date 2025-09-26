@@ -8,5 +8,5 @@ export type CommentType = {
     id: string,
     name: string
   };
-  userReaction?: 'like' | 'dislike' | null;
+  userReaction?: 'like' | 'dislike' | 'violate' | null;
 }

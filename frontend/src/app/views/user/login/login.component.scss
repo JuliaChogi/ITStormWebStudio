@@ -5,6 +5,17 @@
     display: flex;
     gap: 178px;
 
+    .auth-input input {
+      padding: 17px 20px;
+    }
+
+    .auth-button {
+      &:disabled {
+        background: #666666;
+        color: #FFFFFF;
+      }
+    }
+
     .page-image {
       margin-top: 106px;
     }

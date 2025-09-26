@@ -5,6 +5,7 @@ import {Subject} from "rxjs";
 import {CommentService} from "../../../shared/services/comment.service";
 import {ActivatedRoute} from "@angular/router";
 import {CommentType} from "../../../../types/comment.type";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-comments-block',
@@ -24,7 +25,8 @@ export class CommentsBlockComponent implements OnInit {
 
   constructor(private authService: AuthService,
               private commentService: CommentService,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              private _snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
@@ -38,7 +40,6 @@ export class CommentsBlockComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['articleId'] && this.articleId) {
-      console.log('CommentsBlock: получили articleId =', this.articleId);
       this.loadComments(0);
 
       if (this.commentsCount === 0) {
@@ -70,7 +71,6 @@ export class CommentsBlockComponent implements OnInit {
       .subscribe(response => {
         this.comments = response.comments;
         this.allCount = response.allCount;
-        console.log('COMMENTS LOADED:', this.comments);
 
         this.comments.forEach(comment => {
           this.commentService.getCommentActions(comment.id)
@@ -92,12 +92,13 @@ export class CommentsBlockComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res) => {
-          console.log('COMMENT ADDED:', res);
+          this._snackBar.open('Комментарий успешно добавлен!')
           this.commentText = '';
           this.loadComments(0);
         },
         error: (err) => {
-          console.error('Error adding comment:', err);
+          this._snackBar.open(err)
+          console.error('Ошибка добавления комментария', err);
         }
       });
   }
@@ -106,12 +107,23 @@ export class CommentsBlockComponent implements OnInit {
     this.commentService.applyAction(comment.id, action)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (res) => {
-          console.log('ACTION APPLIED:', res);
+        next: () => {
+          comment.userReaction = action;
+
+          if (action === 'violate') {
+            this._snackBar.open('Жалоба принята');
+          } else {
+            this._snackBar.open('Ваш голос учтен');
+          }
+
           this.loadComments(0);
         },
         error: (err) => {
-          console.error('Error applying action:', err);
+          if (action === 'violate' && err?.error?.message === 'Это действие уже применено к комментарию') {
+            this._snackBar.open('Жалоба уже отправлена');
+          } else {
+            console.error('Ошибка:', err);
+          }
         }
       });
   }

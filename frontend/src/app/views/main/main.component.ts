@@ -16,6 +16,8 @@ export class MainComponent implements OnInit {
 
   customOptions: OwlOptions = {
     loop: true,
+    autoplay: true,
+    autoplaySpeed: 1500,
     mouseDrag: false,
     touchDrag: false,
     pullDrag: false,
@@ -71,13 +73,11 @@ export class MainComponent implements OnInit {
     this.articleService.getTopArticles()
       .subscribe((data: ArticleType[]) => {
         this.topArticles = data;
-        console.log(this.topArticles)
       })
   }
 
   openOrder(service: string) {
     this.modalService.open('order', { service });
-    console.log('Открыта модалка order, service =', service);
   }
 
   openConsultation() {

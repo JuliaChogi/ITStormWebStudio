@@ -36,12 +36,11 @@ relatedArticles: ArticleType[] = [];
       this.articleService.getArticleContent(params['url'])
         .subscribe((data: ArticleContentType) => {
           this.articleContent = data;
-          console.log(data)
 
           this.articleService.getRelatedArticles(params['url'])
             .subscribe((data: ArticleType[]) => {
               this.relatedArticles = data;
-              console.log(data);
+
             })
         })
     })

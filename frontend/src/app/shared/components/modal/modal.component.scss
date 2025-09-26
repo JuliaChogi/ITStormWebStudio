@@ -95,11 +95,25 @@
         color: red;
       }
 
+      .submit-error {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 400;
+        font-size: 12px;
+        margin-bottom: 5px;
+        color: red;
+        max-width: 443px;
+      }
+
       .modal-button {
         margin-top: 15px;
         width: 422px;
         height: 51px;
 
+        &:disabled {
+          background: #666666;
+          color: #FFFFFF;
+          cursor: not-allowed;
+        }
       }
     }
 

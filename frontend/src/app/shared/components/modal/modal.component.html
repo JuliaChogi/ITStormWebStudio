@@ -67,16 +67,34 @@
               услугу
             </div>
 
-            <input class="modal-input" formControlName="name" type="text" placeholder="Ваше имя">
-            <div class="input-error" *ngIf="form.get('name')?.touched && form.get('name')?.invalid">Введите ваше имя
+            <input
+              class="modal-input"
+              formControlName="name"
+              type="text"
+              placeholder="Ваше имя"
+              [ngStyle]="{
+    'border-color': form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched) ? 'red' : ''
+  }"
+            />
+            <div class="input-error" *ngIf="form.get('name')?.touched && form.get('name')?.invalid">
+              Введите ваше имя
             </div>
 
-            <input class="modal-input" formControlName="phone" type="tel" placeholder="Ваш номер телефона">
+            <input
+              class="modal-input"
+              formControlName="phone"
+              type="tel"
+              placeholder="Ваш номер телефона"
+              [ngStyle]="{
+    'border-color': form.get('phone')?.invalid &&
+                    (form.get('phone')?.dirty || form.get('phone')?.touched)
+                    ? 'red' : ''
+  }"
+            />
             <div class="input-error" *ngIf="form.get('phone')?.touched && form.get('phone')?.invalid">Введите ваш номер
               телефона
             </div>
-
-            <button class="btn-main modal-button" type="submit" [disabled]="form.invalid">
+            <button class="btn-main modal-button" type="submit" [disabled]="form.invalid || isSubmitting">
               {{ isSubmitting ? 'Отправка...' : 'Оставить заявку' }}
             </button>
 
