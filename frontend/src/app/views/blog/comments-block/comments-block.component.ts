@@ -1,61 +1,49 @@
-import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
-import {takeUntil} from "rxjs/operators";
-import {AuthService} from "../../../core/auth/auth.service";
-import {Subject} from "rxjs";
-import {CommentService} from "../../../shared/services/comment.service";
-import {ActivatedRoute} from "@angular/router";
-import {CommentType} from "../../../../types/comment.type";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {Component, Input, OnInit, OnDestroy} from '@angular/core';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {AuthService} from '../../../core/auth/auth.service';
+import {CommentService} from '../../../shared/services/comment.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {CommentType} from '../../../../types/comment.type';
 
 @Component({
   selector: 'app-comments-block',
   templateUrl: './comments-block.component.html',
   styleUrls: ['./comments-block.component.scss']
 })
-export class CommentsBlockComponent implements OnInit {
-  @Input() articleId: string = '';
-  @Input() commentsCount: number = 0;
-
-  isLogged = false;
+export class CommentsBlockComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   comments: CommentType[] = [];
   allCount = 0;
-  commentText: string = '';
-  offset = 0;
+  commentText = '';
+  isLogged = false;
 
-  constructor(private authService: AuthService,
-              private commentService: CommentService,
-              private activatedRoute: ActivatedRoute,
-              private _snackBar: MatSnackBar) {
+  private _articleId = '';
+  @Input()
+  set articleId(value: string) {
+    this._articleId = value;
+    if (value) {
+      this.loadComments(0);
+    }
+  }
+
+  get articleId() {
+    return this._articleId;
+  }
+
+  @Input() commentsCount = 0;
+
+  constructor(
+    private authService: AuthService,
+    private commentService: CommentService,
+    private _snackBar: MatSnackBar
+  ) {
   }
 
   ngOnInit(): void {
     this.authService.isLogged$
       .pipe(takeUntil(this.destroy$))
-      .subscribe(isLogged => {
-        this.isLogged = isLogged;
-      });
-    this.loadComments(0);
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['articleId'] && this.articleId) {
-      this.loadComments(0);
-
-      if (this.commentsCount === 0) {
-        this.comments = [];
-        this.allCount = 0;
-        return;
-      }
-      this.loadComments(0);
-    }
-
-    if (changes['commentsCount']
-      && changes['commentsCount'].previousValue === 0
-      && changes['commentsCount'].currentValue > 0
-      && this.articleId) {
-      this.loadComments(0);
-    }
+      .subscribe(isLogged => this.isLogged = isLogged);
   }
 
   ngOnDestroy(): void {
@@ -69,35 +57,39 @@ export class CommentsBlockComponent implements OnInit {
     this.commentService.getComments(this.articleId, offset)
       .pipe(takeUntil(this.destroy$))
       .subscribe(response => {
-        this.comments = response.comments;
-        this.allCount = response.allCount;
+        let newComments = response.comments;
 
-        this.comments.forEach(comment => {
-          this.commentService.getCommentActions(comment.id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(actions => {
-              const action = actions[0];
-              comment.userReaction = action ? action.action : null;
+        if (offset === 0) {
+          this.comments = newComments.slice(0, 3);
+        } else {
+          this.comments = [...this.comments, ...newComments];
+        }
+
+        this.allCount = response.allCount;
+        this.commentService.getArticleCommentActions(this.articleId)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(actions => {
+            const actionsMap = new Map(actions.map(a => [a.comment, a.action]));
+            this.comments.forEach(comment => {
+              comment.userReaction = actionsMap.get(comment.id) || null;
             });
-        });
+          });
       });
   }
 
   onAddComment(): void {
-    if (!this.commentText.trim()) {
-      return;
-    }
+    if (!this.commentText.trim()) return;
 
     this.commentService.addComment(this.articleId, this.commentText)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (res) => {
-          this._snackBar.open('Комментарий успешно добавлен!')
+        next: () => {
+          this._snackBar.open('Комментарий успешно добавлен!');
           this.commentText = '';
           this.loadComments(0);
         },
         error: (err) => {
-          this._snackBar.open(err)
+          this._snackBar.open(err);
           console.error('Ошибка добавления комментария', err);
         }
       });
@@ -108,15 +100,26 @@ export class CommentsBlockComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
+
+          if (comment.userReaction === 'like') comment.likesCount--;
+          if (comment.userReaction === 'dislike') comment.dislikesCount--;
+
           comment.userReaction = action;
+          if (action === 'like') comment.likesCount++;
+          if (action === 'dislike') comment.dislikesCount++;
 
-          if (action === 'violate') {
-            this._snackBar.open('Жалоба принята');
-          } else {
-            this._snackBar.open('Ваш голос учтен');
+          this._snackBar.open(action === 'violate' ? 'Жалоба принята' : 'Ваш голос учтен');
+
+          if (action !== 'violate') {
+            this.commentService.getArticleCommentActions(this.articleId)
+              .pipe(takeUntil(this.destroy$))
+              .subscribe(actions => {
+                const actionsMap = new Map(actions.map(a => [a.comment, a.action]));
+                this.comments.forEach(c => {
+                  c.userReaction = actionsMap.get(c.id) || null;
+                });
+              });
           }
-
-          this.loadComments(0);
         },
         error: (err) => {
           if (action === 'violate' && err?.error?.message === 'Это действие уже применено к комментарию') {
@@ -128,4 +131,7 @@ export class CommentsBlockComponent implements OnInit {
       });
   }
 
+  loadMoreComments(): void {
+    this.loadComments(this.comments.length);
+  }
 }

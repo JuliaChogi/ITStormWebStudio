@@ -292,6 +292,23 @@
         display: flex;
         gap: 24px;
       }
+
+      .popular-articles-link {
+        cursor: pointer;
+        margin-top: 40px;
+        display: flex;
+        justify-content: flex-end;
+
+        a {
+          font-family: 'Montserrat', sans-serif;
+          font-weight: 500;
+          color: $light-blue-main-color;
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          text-decoration: none;
+        }
+      }
     }
 
     .opinions {
@@ -364,38 +381,44 @@
     .contact-info {
       display: flex;
       gap: 26px;
-     .contact-info-details {
-       display: flex;
-       flex-direction: column;
-       gap: 20px;
-       .contact-info-details-title{
-         @include head-lora-38;
-       }
-       .contact-info-block {
-         display: flex;
-         flex-direction: column;
-         gap: 10px;
-         .contact-info-title-small {
 
-           font-family: 'Montserrat', sans-serif;
-           font-weight: 500;
-           font-size: 20px;
-           color: $light-blue-main-color;
-         }
-         .contact-info-text {
-           font-family: 'Montserrat', sans-serif;
-           font-weight: 400;
-           font-size: 14px;
-           line-height: 130%;
-           color: $darker-blue-text-color;
-           text-decoration: none;
-         }
-         .contact-info-socials {
-           display: flex;
-           gap: 20px;
-         }
-       }
-     }
+      .contact-info-details {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .contact-info-details-title {
+          @include head-lora-38;
+        }
+
+        .contact-info-block {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+
+          .contact-info-title-small {
+
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            font-size: 20px;
+            color: $light-blue-main-color;
+          }
+
+          .contact-info-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 130%;
+            color: $darker-blue-text-color;
+            text-decoration: none;
+          }
+
+          .contact-info-socials {
+            display: flex;
+            gap: 20px;
+          }
+        }
+      }
     }
   }
 }

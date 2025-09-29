@@ -13,7 +13,7 @@ export class CommentService {
   constructor(private http: HttpClient) {
   }
 
-  getComments(articleId: string, offset: number = 0): Observable<{ allCount: number, comments: CommentType[] }> {
+  getComments(articleId: string, offset: number): Observable<{ allCount: number, comments: CommentType[] }> {
     let params = new HttpParams()
       .set('article', articleId)
       .set('offset', offset.toString());
@@ -44,9 +44,13 @@ export class CommentService {
     );
   }
 
-  getCommentActions(commentId: string): Observable<{ comment: string, action: 'like' | 'dislike' }[]> {
+  getArticleCommentActions(articleId: string) {
     return this.http.get<{ comment: string, action: 'like' | 'dislike' }[]>(
-      environment.api + 'comments/' + commentId + '/actions',
+      `${environment.api}comments/article-comment-actions`,
+      { params: { articleId } }
     );
   }
+
 }
+
+
