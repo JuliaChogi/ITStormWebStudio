@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {LayoutComponent} from './shared/layout/layout.component';
 import {MainComponent} from './views/main/main.component';
 import {MatMenuModule} from "@angular/material/menu";
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from "@angular/material/snack-bar";
@@ -13,7 +12,6 @@ import {AuthInterceptor} from "./core/auth/auth.interceptor";
 import {CarouselModule} from "ngx-owl-carousel-o";
 import {SharedModule} from "./shared/shared.module";
 import {CommonModule} from "@angular/common";
-import {ModalComponent} from "./shared/components/modal/modal.component";
 import { PolicyComponent } from './views/policy/policy.component';
 
 

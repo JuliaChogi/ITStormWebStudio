@@ -133,3 +133,7 @@ input {
   }
 
 }
+
+.mat-progress-spinner circle, .mat-spinner circle {
+  stroke: $light-blue-main-color;
+}

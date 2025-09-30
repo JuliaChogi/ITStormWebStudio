@@ -11,6 +11,8 @@ import {ArticleDescriptionShortenerPipe} from './pipes/article-description-short
 import {ModalComponent} from './components/modal/modal.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
+import {LoaderComponent} from './components/loader/loader.component';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 
 @NgModule({
@@ -20,7 +22,8 @@ import {HttpClientModule} from "@angular/common/http";
     LayoutComponent,
     FooterComponent,
     ArticleDescriptionShortenerPipe,
-    ModalComponent
+    ModalComponent,
+    LoaderComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +31,7 @@ import {HttpClientModule} from "@angular/common/http";
     MatMenuModule,
     MatButtonModule,
     ReactiveFormsModule,
-
+    MatProgressSpinnerModule
   ],
   exports: [
     ArticleCardComponent,
@@ -39,7 +42,8 @@ import {HttpClientModule} from "@angular/common/http";
     MatMenuModule,
     MatButtonModule,
     ArticleDescriptionShortenerPipe,
-    ModalComponent
+    ModalComponent,
+    LoaderComponent
   ]
 })
 export class SharedModule {
