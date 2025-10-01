@@ -1,24 +1,24 @@
 <footer class="footer">
   <div class="container">
     <div class="footer-navigation-block">
-      <a href="#" class="logo"><img src="/assets/images/Logo.png" alt="Логотип АйтиШторм"></a>
+      <a routerLink="/" class="logo"><img src="/assets/images/Logo.png" alt="Логотип АйтиШторм"></a>
       <div class="footer-navigation navigation">
         <nav>
           <ul>
             <li>
-              <a routerLink="/" fragment="services">Услуги</a>
+              <a routerLink="/" fragment="services" [class.active]="isActive('services')">Услуги</a>
             </li>
             <li>
-              <a routerLink="/" fragment="about">О нас</a>
+              <a routerLink="/" fragment="about" [class.active]="isActive('about')">О нас</a>
             </li>
             <li>
-              <a routerLink="/blog" routerLinkActive = 'active'>Статьи</a>
+              <a routerLink="/blog" routerLinkActive='active'>Статьи</a>
             </li>
             <li>
-              <a routerLink="/" fragment="opinions">Отзывы</a>
+              <a routerLink="/" fragment="opinions" [class.active]="isActive('opinions')">Отзывы</a>
             </li>
             <li>
-              <a routerLink="/" fragment="contact-info">Контакты</a>
+              <a routerLink="/" fragment="contact-info" [class.active]="isActive('contact-info')">Контакты</a>
             </li>
           </ul>
         </nav>

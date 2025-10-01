@@ -2,11 +2,10 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Router, Params} from '@angular/router';
 import {debounceTime, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {ArticleService} from '../../../shared/services/article.service';
-import {ArticleType} from '../../../../types/article.type';
-import {ArticleCategoryType} from '../../../../types/article-category.type';
 import {ActiveParamsUtil} from '../../../shared/utils/active-params.util';
-import {ActiveParamsType} from '../../../../types/active-params.type';
+import {ActiveParamsType, ArticleCategoryType, ArticleType} from "../../../../types";
+import {ArticleService} from "../../../shared/services";
+
 
 @Component({
   selector: 'app-catalog',
@@ -18,11 +17,11 @@ export class CatalogComponent implements OnInit, OnDestroy {
   articleCategories: ArticleCategoryType[] = [];
   selectedCategories: string[] = [];
 
-  currentPage = 1;
-  pages = 1;
-  count = 0;
+  public currentPage: number = 1;
+  public pages: number = 1;
+  public count: number = 0;
 
-  dropdownOpen = false;
+ dropdownOpen: boolean = false;
 
   private destroy$ = new Subject<void>();
 
@@ -36,14 +35,13 @@ export class CatalogComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.articleService.getArticleCategories()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
+      .subscribe((data: ArticleCategoryType[]) => {
         this.articleCategories = data;
       });
 
-    // читаем параметры из URL и при их изменении — загружаем статьи
     this.route.queryParams
       .pipe(takeUntil(this.destroy$))
-      .subscribe((params: Params) => {
+      .subscribe((params: Params): void => {
         const active: ActiveParamsType = ActiveParamsUtil.processParams(params);
 
         this.selectedCategories = active.categories || [];
@@ -57,7 +55,6 @@ export class CatalogComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  //загрузка статей с параметрами
   private loadArticles(): void {
     const params: ActiveParamsType = {
       categories: this.selectedCategories,
@@ -78,9 +75,8 @@ export class CatalogComponent implements OnInit, OnDestroy {
       })
   }
 
-  // получаем имя категории по url
   getCategoryNameByUrl(url: string): string {
-    const categoryName = this.articleCategories.find(x => x.url === url);
+    const categoryName: ArticleCategoryType | undefined = this.articleCategories.find(x => x.url === url);
     return categoryName ? categoryName.name : url;
   }
 
@@ -120,7 +116,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
     });
   }
 
-  goToPage(page: number): void {
+goToPage(page: number): void {
     if (page < 1 || page > this.pages || page === this.currentPage) return;
     this.currentPage = page;
     this.updateUrl();

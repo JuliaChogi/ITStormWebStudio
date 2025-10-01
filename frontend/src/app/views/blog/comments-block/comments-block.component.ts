@@ -4,7 +4,7 @@ import {takeUntil} from 'rxjs/operators';
 import {AuthService} from '../../../core/auth/auth.service';
 import {CommentService} from '../../../shared/services/comment.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {CommentType} from '../../../../types/comment.type';
+import {CommentType} from '../../../../types';
 
 @Component({
   selector: 'app-comments-block',
@@ -96,39 +96,43 @@ export class CommentsBlockComponent implements OnInit, OnDestroy {
   }
 
   onCommentAction(comment: CommentType, action: 'like' | 'dislike' | 'violate'): void {
-    this.commentService.applyAction(comment.id, action)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
+    if (this.isLogged) {
+      this.commentService.applyAction(comment.id, action)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
 
-          if (comment.userReaction === 'like') comment.likesCount--;
-          if (comment.userReaction === 'dislike') comment.dislikesCount--;
+            if (comment.userReaction === 'like') comment.likesCount--;
+            if (comment.userReaction === 'dislike') comment.dislikesCount--;
 
-          comment.userReaction = action;
-          if (action === 'like') comment.likesCount++;
-          if (action === 'dislike') comment.dislikesCount++;
+            comment.userReaction = action;
+            if (action === 'like') comment.likesCount++;
+            if (action === 'dislike') comment.dislikesCount++;
 
-          this._snackBar.open(action === 'violate' ? 'Жалоба принята' : 'Ваш голос учтен');
+            this._snackBar.open(action === 'violate' ? 'Жалоба принята' : 'Ваш голос учтен');
 
-          if (action !== 'violate') {
-            this.commentService.getArticleCommentActions(this.articleId)
-              .pipe(takeUntil(this.destroy$))
-              .subscribe(actions => {
-                const actionsMap = new Map(actions.map(a => [a.comment, a.action]));
-                this.comments.forEach(c => {
-                  c.userReaction = actionsMap.get(c.id) || null;
+            if (action !== 'violate') {
+              this.commentService.getArticleCommentActions(this.articleId)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(actions => {
+                  const actionsMap = new Map(actions.map(a => [a.comment, a.action]));
+                  this.comments.forEach(c => {
+                    c.userReaction = actionsMap.get(c.id) || null;
+                  });
                 });
-              });
+            }
+          },
+          error: (err) => {
+            if (action === 'violate' && err?.error?.message === 'Это действие уже применено к комментарию') {
+              this._snackBar.open('Жалоба уже отправлена');
+            } else {
+              console.error('Ошибка:', err);
+            }
           }
-        },
-        error: (err) => {
-          if (action === 'violate' && err?.error?.message === 'Это действие уже применено к комментарию') {
-            this._snackBar.open('Жалоба уже отправлена');
-          } else {
-            console.error('Ошибка:', err);
-          }
-        }
-      });
+        });
+    } else {
+      this._snackBar.open('Для данного действия требуется авторизация!')
+    }
   }
 
   loadMoreComments(): void {

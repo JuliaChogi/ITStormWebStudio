@@ -1,7 +1,7 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {AuthService} from "../../../core/auth/auth.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../../core/auth/user.service";
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
@@ -12,6 +12,7 @@ import {takeUntil} from "rxjs/operators";
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  private activeFragment: string | null = null;
   isLogged = false;
   userName: string | null = null;
 
@@ -21,11 +22,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private userService: UserService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private _activeRoute: ActivatedRoute
   ) {
   }
 
   ngOnInit(): void {
+    this._activeRoute.fragment.subscribe(fragment => {
+      this.activeFragment = fragment;
+    });
+
     this.authService.isLogged$
       .pipe(takeUntil(this.destroy$))
       .subscribe(isLogged => {
@@ -47,6 +53,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .subscribe(name => {
         this.userName = name;
       });
+  }
+
+  isActive(fragment: string):boolean {
+    return this.activeFragment === fragment;
   }
 
   logout(): void {
