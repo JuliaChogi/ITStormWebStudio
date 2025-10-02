@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {LayoutComponent} from "./shared/layout/layout.component";
-import {MainComponent} from "./views/main/main.component";
-import {PolicyComponent} from "./views/policy/policy.component";
+import {LayoutComponent} from "./shared";
+import {MainComponent, PolicyComponent} from "./views";
 
 const routes: Routes = [
   {

@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {OwlOptions} from "ngx-owl-carousel-o";
-import {ArticleService} from "../../shared/services/article.service";
-import {ArticleType} from "../../../types/article.type";
-import {ModalService} from "../../shared/services/modal.service";
+import {ArticleType} from "../../../types";
+import {ArticleService, ModalService} from "../../shared";
 
 @Component({
   selector: 'app-main',
@@ -12,7 +11,6 @@ import {ModalService} from "../../shared/services/modal.service";
 
 
 export class MainComponent implements OnInit {
-
 
   customOptions: OwlOptions = {
     loop: true,
@@ -40,6 +38,7 @@ export class MainComponent implements OnInit {
     },
     nav: false
   }
+
   customOptionsOpinions: OwlOptions = {
     loop: true,
     mouseDrag: false,

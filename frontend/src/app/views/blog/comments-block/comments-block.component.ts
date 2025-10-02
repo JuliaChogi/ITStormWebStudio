@@ -1,10 +1,10 @@
 import {Component, Input, OnInit, OnDestroy} from '@angular/core';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {AuthService} from '../../../core/auth/auth.service';
-import {CommentService} from '../../../shared/services/comment.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {CommentType} from '../../../../types';
+import {AuthService} from "../../../core";
+import {CommentService} from "../../../shared";
 
 @Component({
   selector: 'app-comments-block',
@@ -12,6 +12,7 @@ import {CommentType} from '../../../../types';
   styleUrls: ['./comments-block.component.scss']
 })
 export class CommentsBlockComponent implements OnInit, OnDestroy {
+
   private destroy$ = new Subject<void>();
   comments: CommentType[] = [];
   allCount = 0;

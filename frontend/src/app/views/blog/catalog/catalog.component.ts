@@ -2,9 +2,8 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Router, Params} from '@angular/router';
 import {debounceTime, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {ActiveParamsUtil} from '../../../shared/utils/active-params.util';
 import {ActiveParamsType, ArticleCategoryType, ArticleType} from "../../../../types";
-import {ArticleService} from "../../../shared/services";
+import {ActiveParamsUtil, ArticleService} from "../../../shared";
 
 
 @Component({
@@ -21,7 +20,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
   public pages: number = 1;
   public count: number = 0;
 
- dropdownOpen: boolean = false;
+  dropdownOpen: boolean = false;
 
   private destroy$ = new Subject<void>();
 
@@ -43,7 +42,6 @@ export class CatalogComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((params: Params): void => {
         const active: ActiveParamsType = ActiveParamsUtil.processParams(params);
-
         this.selectedCategories = active.categories || [];
         this.currentPage = active.page || 1;
         this.loadArticles();
@@ -116,7 +114,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
     });
   }
 
-goToPage(page: number): void {
+  goToPage(page: number): void {
     if (page < 1 || page > this.pages || page === this.currentPage) return;
     this.currentPage = page;
     this.updateUrl();

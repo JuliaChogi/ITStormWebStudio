@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs';
-import {UserInfoType} from '../../../types/user-info.type';
-import {DefaultResponseType} from '../../../types/default-response.type';
 import {environment} from '../../../environments/environment';
+import {DefaultResponseType, UserInfoType} from "../../../types";
 
 
 @Injectable({
@@ -12,8 +11,6 @@ import {environment} from '../../../environments/environment';
 
 export class UserService {
   private userSubject = new BehaviorSubject<UserInfoType | null>(null);
-  public user$ = this.userSubject.asObservable();
-
   private userNameSubject = new BehaviorSubject<string | null>(null);
   public userName$ = this.userNameSubject.asObservable();
 

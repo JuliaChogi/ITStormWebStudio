@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from "@angular/forms";
-import { AuthService } from "../../../core/auth/auth.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
-import { LoginResponseType } from "../../../../types/login-response.type";
-import { DefaultResponseType } from "../../../../types/default-response.type";
 import { HttpErrorResponse } from "@angular/common/http";
+import {AuthService} from "../../../core";
+import {DefaultResponseType, LoginResponseType} from "../../../../types";
 
 @Component({
   selector: 'app-login',
@@ -49,5 +48,4 @@ export class LoginComponent implements OnInit {
       });
     }
   }
-
 }

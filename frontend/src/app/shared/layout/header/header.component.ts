@@ -1,10 +1,9 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {AuthService} from "../../../core/auth/auth.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {ActivatedRoute, Router} from "@angular/router";
-import {UserService} from "../../../core/auth/user.service";
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
+import {AuthService, UserService} from "../../../core";
 
 @Component({
   selector: 'app-header',

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ModalService} from "../../services/modal.service";
 import {ActivatedRoute} from "@angular/router";
+import {ModalService} from "../../services";
 
 @Component({
   selector: 'app-footer',

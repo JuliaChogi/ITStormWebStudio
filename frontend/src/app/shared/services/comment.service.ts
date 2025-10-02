@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {CommentType} from "../../../types/comment.type";
 import {environment} from "../../../environments/environment";
-import {DefaultResponseType} from "../../../types/default-response.type";
+import {CommentType, DefaultResponseType} from "../../../types";
 
 @Injectable({
   providedIn: 'root'
@@ -50,7 +49,6 @@ export class CommentService {
       { params: { articleId } }
     );
   }
-
 }
 
 

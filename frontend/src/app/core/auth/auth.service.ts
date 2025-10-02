@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, Subject, throwError} from "rxjs";
-import {DefaultResponseType} from "../../../types/default-response.type";
-import {LoginResponseType} from "../../../types/login-response.type";
+import {BehaviorSubject, Observable, throwError} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
+import {DefaultResponseType, LoginResponseType} from "../../../types";
 
 
 @Injectable({
@@ -16,7 +15,6 @@ export class AuthService {
   public refreshTokenKey: string = 'refreshToken';
   public userIdKey: string = 'userId';
   public isLogged$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(!!localStorage.getItem(this.accessTokenKey));
-  // public isLogged$: Subject<boolean> = new Subject<boolean>();
   private isLogged: boolean = false;
 
   constructor(private http: HttpClient) {

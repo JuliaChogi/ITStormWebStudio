@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from "@angular/forms";
-import { AuthService } from "../../../core/auth/auth.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
 import { HttpErrorResponse } from "@angular/common/http";
+import {AuthService} from "../../../core";
 
 @Component({
   selector: 'app-signup',
@@ -54,5 +54,4 @@ export class SignupComponent implements OnInit {
       });
     }
   }
-
 }

@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ModalService, ModalType } from '../../services/modal.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from "../../../../environments/environment";
+import {ModalService, ModalType} from "../../services";
 
 @Component({
   selector: 'app-modal',
