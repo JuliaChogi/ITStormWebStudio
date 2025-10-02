@@ -11,24 +11,22 @@ import {DefaultResponseType, LoginResponseType} from "../../../types";
 export class AuthInterceptor implements HttpInterceptor {
 
   constructor(
-    private authService: AuthService,
-    private router: Router,
-    private loaderService: LoaderService
+    private readonly authService: AuthService,
+    private readonly router: Router,
+    private readonly loaderService: LoaderService
   ) {
   }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.loaderService.show();
-
-    const tokens = this.authService.getTokens();
-    const authReq = tokens?.accessToken
+    const tokens: { accessToken: string | null; refreshToken: string | null } = this.authService.getTokens();
+    const authReq: HttpRequest<any> = tokens?.accessToken
       ? req.clone({
         setHeaders: {
           'x-auth': tokens.accessToken
         }
       })
       : req;
-
     return next.handle(authReq).pipe(
       catchError(error => {
         if (error.status === 401 && !req.url.includes('/login') && !req.url.includes('/refresh')) {
@@ -43,21 +41,18 @@ export class AuthInterceptor implements HttpInterceptor {
   private handle401Error(req: HttpRequest<any>, next: HttpHandler) {
     return this.authService.refresh().pipe(
       switchMap((result: DefaultResponseType | LoginResponseType) => {
-        let error = '';
+        let error: string = '';
         if ((result as DefaultResponseType).error) {
           error = (result as DefaultResponseType).message;
         }
 
-        const refreshResult = result as LoginResponseType;
+        const refreshResult: LoginResponseType = result as LoginResponseType;
         if (!refreshResult.accessToken || !refreshResult.refreshToken || !refreshResult.userId) {
           error = error || 'Ошибка авторизации';
         }
-
         if (error) return throwError(() => new Error(error));
-
         this.authService.setTokens(refreshResult.accessToken, refreshResult.refreshToken);
-
-        const newReq = req.clone({
+        const newReq: HttpRequest<any> = req.clone({
           setHeaders: {
             'x-auth': refreshResult.accessToken
           }

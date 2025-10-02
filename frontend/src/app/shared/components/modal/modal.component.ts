@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { environment } from "../../../../environments/environment";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Subscription} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {environment} from "../../../../environments/environment";
 import {ModalService, ModalType} from "../../services";
 
 @Component({
@@ -11,31 +11,32 @@ import {ModalService, ModalType} from "../../services";
   styleUrls: ['./modal.component.scss']
 })
 export class ModalComponent implements OnInit, OnDestroy {
-  modalType: ModalType = null;
-  payload: any = null;
-  form: FormGroup | null = null;
+  protected modalType: ModalType = null;
+  private payload: any = null;
+  protected form: FormGroup | null = null;
 
-  services: string[] = [
+  protected services: string[] = [
     'Создание сайтов',
     'Продвижение',
     'Реклама',
     'Копирайтинг'
   ];
 
-  submitError = '';
-  isSubmitting = false;
+  protected submitError: string = '';
+  protected isSubmitting: boolean = false;
 
-  private subs = new Subscription();
+  private subs: Subscription = new Subscription();
 
   constructor(
     private modalService: ModalService,
     private fb: FormBuilder,
     private http: HttpClient
-  ) {}
+  ) {
+  }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.subs.add(
-      this.modalService.modalType$.subscribe(type => {
+      this.modalService.modalType$.subscribe((type: "consultation" | "order" | "success" | null): void => {
         this.modalType = type;
         this.buildForm();
       })
@@ -53,20 +54,20 @@ export class ModalComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
 
-  onClose() {
+  protected onClose(): void {
     this.modalService.close();
   }
 
-  private buildForm() {
+  private buildForm(): void {
     this.submitError = '';
     this.isSubmitting = false;
 
-    const namePattern = /^[А-ЯЁа-яё]+(?: [А-ЯЁа-яё]+)*$/;
-    const phonePattern = /^\d[\d ]{10,}$/;
+    const namePattern: RegExp = /^[А-ЯЁа-яё]+(?: [А-ЯЁа-яё]+)*$/;
+    const phonePattern: RegExp = /^\d[\d ]{10,}$/;
 
     if (this.modalType === 'order') {
       const defaultService = this.payload?.service ?? '';
@@ -84,12 +85,12 @@ export class ModalComponent implements OnInit, OnDestroy {
       this.form = null;
     }
     this.subs.add(
-      this.form?.valueChanges.subscribe(() => {
+      this.form?.valueChanges.subscribe((): void => {
       })
     );
   }
 
-  onSubmit() {
+  protected onSubmit(): void {
     if (!this.form) return;
     this.form.markAllAsTouched();
 
@@ -113,7 +114,7 @@ export class ModalComponent implements OnInit, OnDestroy {
     }
 
     this.http.post(environment.api + 'requests', payload).subscribe({
-      next: (res: any) => {
+      next: (res: any): void => {
         this.isSubmitting = false;
         if (res && res.error) {
           this.submitError = 'Произошла ошибка при отправке формы, попробуйте еще раз.';
@@ -121,7 +122,7 @@ export class ModalComponent implements OnInit, OnDestroy {
           this.modalService.open('success');
         }
       },
-      error: () => {
+      error: (): void => {
         this.isSubmitting = false;
         this.submitError = 'Произошла ошибка при отправке формы, попробуйте еще раз.';
       }

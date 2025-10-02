@@ -12,7 +12,7 @@ import {ArticleService, ModalService} from "../../shared";
 
 export class MainComponent implements OnInit {
 
-  customOptions: OwlOptions = {
+  protected customOptions: OwlOptions = {
     loop: true,
     autoplay: true,
     autoplaySpeed: 1500,
@@ -37,9 +37,9 @@ export class MainComponent implements OnInit {
       }
     },
     nav: false
-  }
+  };
 
-  customOptionsOpinions: OwlOptions = {
+  protected customOptionsOpinions: OwlOptions = {
     loop: true,
     mouseDrag: false,
     touchDrag: false,
@@ -62,24 +62,24 @@ export class MainComponent implements OnInit {
     nav: false
   };
 
-  topArticles: ArticleType[] = [];
+  protected topArticles: ArticleType[] = [];
 
-  constructor(private articleService: ArticleService,
-              private modalService: ModalService) {
+  constructor(private readonly articleService: ArticleService,
+              private readonly modalService: ModalService) {
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.articleService.getTopArticles()
-      .subscribe((data: ArticleType[]) => {
+      .subscribe((data: ArticleType[]): void => {
         this.topArticles = data;
-      })
+      });
   }
 
-  openOrder(service: string) {
+  protected openOrder(service: string): void {
     this.modalService.open('order', { service });
   }
 
-  openConsultation() {
+  protected openConsultation(): void {
     this.modalService.open('consultation');
   }
 }

@@ -22,13 +22,13 @@ export class AuthService {
     this.isLogged$.next(this.isLogged);
   }
 
-  login(email: string, password: string, rememberMe: boolean): Observable<DefaultResponseType | LoginResponseType> {
+  public login(email: string, password: string, rememberMe: boolean): Observable<DefaultResponseType | LoginResponseType> {
     return this.http.post<DefaultResponseType | LoginResponseType>(environment.api + 'login', {
       email, password, rememberMe
     });
   }
 
-  signup(name: string, email: string, password: string): Observable<DefaultResponseType | LoginResponseType> {
+  public signup(name: string, email: string, password: string): Observable<DefaultResponseType | LoginResponseType> {
     return this.http.post<DefaultResponseType | LoginResponseType>(environment.api + 'signup', {
       name, email, password
     });
@@ -46,7 +46,7 @@ export class AuthService {
       error = (data as DefaultResponseType).message;
     }
 
-    const loginResponse = data as LoginResponseType;
+    const loginResponse: LoginResponseType = data as LoginResponseType;
     if (!loginResponse.accessToken || !loginResponse.refreshToken || !loginResponse.userId) {
       error = 'Ошибка авторизации';
     }
@@ -62,8 +62,8 @@ export class AuthService {
     router.navigate(['/']);
   }
 
-  logout(): Observable<DefaultResponseType> {
-    const tokens = this.getTokens();
+  public logout(): Observable<DefaultResponseType> {
+    const tokens: { accessToken: string | null; refreshToken: string | null } = this.getTokens();
     if (tokens && tokens.refreshToken) {
       return this.http.post<DefaultResponseType>(environment.api + 'logout', {
         refreshToken: tokens.refreshToken
@@ -72,8 +72,8 @@ export class AuthService {
     return throwError(() => new Error('Can not find token'));
   }
 
-  refresh(): Observable<DefaultResponseType | LoginResponseType> {
-    const tokens = this.getTokens();
+  public refresh(): Observable<DefaultResponseType | LoginResponseType> {
+    const tokens: { accessToken: string | null; refreshToken: string | null } = this.getTokens();
     if (tokens && tokens.refreshToken) {
       return this.http.post<DefaultResponseType | LoginResponseType>(environment.api + 'refresh', {
         refreshToken: tokens.refreshToken
@@ -103,7 +103,7 @@ export class AuthService {
     };
   }
 
-  set userId(id: string | null) {
+  public set userId(id: string | null) {
     if (id) {
       localStorage.setItem(this.userIdKey, id);
     } else {

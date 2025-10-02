@@ -12,26 +12,26 @@ import {ActiveParamsUtil, ArticleService} from "../../../shared";
   styleUrls: ['./catalog.component.scss']
 })
 export class CatalogComponent implements OnInit, OnDestroy {
-  articles: ArticleType[] = [];
-  articleCategories: ArticleCategoryType[] = [];
-  selectedCategories: string[] = [];
+  public articles: ArticleType[] = [];
+  protected articleCategories: ArticleCategoryType[] = [];
+  protected selectedCategories: string[] = [];
 
-  public currentPage: number = 1;
-  public pages: number = 1;
-  public count: number = 0;
+  protected currentPage: number = 1;
+  protected pages: number = 1;
+  private count: number = 0;
 
-  dropdownOpen: boolean = false;
+  protected dropdownOpen: boolean = false;
 
   private destroy$ = new Subject<void>();
 
   constructor(
-    private articleService: ArticleService,
-    private route: ActivatedRoute,
-    private router: Router
+    private readonly articleService: ArticleService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router
   ) {
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.articleService.getArticleCategories()
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: ArticleCategoryType[]) => {
@@ -48,12 +48,12 @@ export class CatalogComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  private loadArticles(): void {
+ private loadArticles(): void {
     const params: ActiveParamsType = {
       categories: this.selectedCategories,
       page: this.currentPage
@@ -70,7 +70,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
         error: err => {
           console.error('Ошибка при загрузке статей', err);
         }
-      })
+      });
   }
 
   getCategoryNameByUrl(url: string): string {

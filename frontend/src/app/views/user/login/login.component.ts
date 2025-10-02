@@ -11,7 +11,7 @@ import {DefaultResponseType, LoginResponseType} from "../../../../types";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   loginForm = this.fb.group({
     email: ['', [Validators.email, Validators.required]],
@@ -25,8 +25,6 @@ export class LoginComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private router: Router
   ) { }
-
-  ngOnInit(): void { }
 
   login(): void {
     if (this.loginForm.valid && this.loginForm.value.email && this.loginForm.value.password) {

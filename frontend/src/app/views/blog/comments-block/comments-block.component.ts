@@ -132,7 +132,7 @@ export class CommentsBlockComponent implements OnInit, OnDestroy {
           }
         });
     } else {
-      this._snackBar.open('Для данного действия требуется авторизация!')
+      this._snackBar.open('Для данного действия требуется авторизация!');
     }
   }
 

@@ -10,7 +10,7 @@ import {AuthService} from "../../../core";
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent {
 
   signupForm = this.fb.group({
     userName: ['', [Validators.required, Validators.pattern(/^[А-ЯЁ][а-яё]*(?: [А-ЯЁ][а-яё]*)*$/)]],
@@ -25,8 +25,6 @@ export class SignupComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private router: Router
   ) { }
-
-  ngOnInit(): void { }
 
   signUp() {
     if (

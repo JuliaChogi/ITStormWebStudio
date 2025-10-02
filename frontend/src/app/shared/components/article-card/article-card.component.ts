@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ArticleType} from "../../../../types";
 import {environment} from "../../../../environments/environment";
 import {Router} from "@angular/router";
@@ -8,19 +8,16 @@ import {Router} from "@angular/router";
   templateUrl: './article-card.component.html',
   styleUrls: ['./article-card.component.scss']
 })
-export class ArticleCardComponent implements OnInit {
+export class ArticleCardComponent {
   @Input() article!: ArticleType;
-  serverStaticPath = environment.serverStaticPath;
+  protected serverStaticPath: string = environment.serverStaticPath;
 
-  constructor(private router: Router) {
+  constructor(private readonly router: Router) {
   }
 
-  ngOnInit(): void {
-  }
-
-  redirectToArticle(url: string) {
-    this.router.navigate(['article', url]).then(() => {
+  protected redirectToArticle(url: string): void {
+    this.router.navigate(['article', url]).then((): void => {
       window.scrollTo(0,0);
-    })
+    });
   }
 }

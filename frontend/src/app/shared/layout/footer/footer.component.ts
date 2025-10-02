@@ -10,20 +10,20 @@ import {ModalService} from "../../services";
 export class FooterComponent implements OnInit {
   private activeFragment: string | null = null;
 
-  constructor(private modalService: ModalService, private _activeRoute: ActivatedRoute) {
+  constructor(private readonly modalService: ModalService, private readonly activeRoute: ActivatedRoute) {
   }
 
-  openConsultation() {
+  protected openConsultation(): void {
     this.modalService.open('consultation');
   }
 
-  ngOnInit(): void {
-    this._activeRoute.fragment.subscribe(fragment => {
+  public ngOnInit(): void {
+    this.activeRoute.fragment.subscribe((fragment: string | null): void => {
       this.activeFragment = fragment;
     });
   }
 
-  isActive(fragment: string): boolean {
+  protected isActive(fragment: string): boolean {
     return this.activeFragment === fragment;
   }
 }

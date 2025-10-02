@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {DefaultResponseType, UserInfoType} from "../../../types";
 
@@ -10,40 +10,40 @@ import {DefaultResponseType, UserInfoType} from "../../../types";
 })
 
 export class UserService {
-  private userSubject = new BehaviorSubject<UserInfoType | null>(null);
-  private userNameSubject = new BehaviorSubject<string | null>(null);
-  public userName$ = this.userNameSubject.asObservable();
+  private userSubject: BehaviorSubject<UserInfoType | null> = new BehaviorSubject<UserInfoType | null>(null);
+  private userNameSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
+  public userName$: Observable<string | null> = this.userNameSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(private readonly http: HttpClient) {
   }
 
-  getUserInfo(): void {
+  public getUserInfo(): void {
     this.http.get<UserInfoType | DefaultResponseType>(
       environment.api + 'users'
     ).subscribe({
-      next: (data) => {
+      next: (data: UserInfoType | DefaultResponseType): void => {
         if ((data as DefaultResponseType).error !== undefined) {
           console.error('[UserService] Сервер вернул ошибку:', (data as DefaultResponseType).message);
           this.clearUserInfo();
           return;
         }
 
-        const userData = data as UserInfoType;
+        const userData: UserInfoType = data as UserInfoType;
         this.setUserInfo(userData);
       },
-      error: (err) => {
+      error: (err): void => {
         console.error('[UserService] Ошибка при получении данных пользователя:', err);
         this.clearUserInfo();
       }
     });
   }
 
-  clearUserInfo() {
+  public clearUserInfo(): void {
     this.userSubject.next(null);
     this.userNameSubject.next(null);
   }
 
-  setUserInfo(user: UserInfoType) {
+  private setUserInfo(user: UserInfoType): void {
     this.userSubject.next(user);
     this.userNameSubject.next(user.name);
   }

@@ -1,1 +1,1 @@
-export * from './article-description-shortener.pipe'
+export * from './article-description-shortener.pipe';

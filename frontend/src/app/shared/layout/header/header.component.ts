@@ -12,36 +12,33 @@ import {AuthService, UserService} from "../../../core";
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   private activeFragment: string | null = null;
-  isLogged = false;
-  userName: string | null = null;
+  protected isLogged: boolean = false;
+  protected userName: string | null = null;
 
   private destroy$ = new Subject<void>();
 
   constructor(
-    private authService: AuthService,
-    private userService: UserService,
-    private snackBar: MatSnackBar,
-    private router: Router,
-    private _activeRoute: ActivatedRoute
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+    private readonly snackBar: MatSnackBar,
+    private readonly router: Router,
+    private readonly activeRoute: ActivatedRoute
   ) {
   }
 
-  ngOnInit(): void {
-    this._activeRoute.fragment.subscribe(fragment => {
+  public ngOnInit(): void {
+    this.activeRoute.fragment.subscribe((fragment: string | null): void => {
       this.activeFragment = fragment;
     });
-
     this.authService.isLogged$
       .pipe(takeUntil(this.destroy$))
-      .subscribe(isLogged => {
+      .subscribe((isLogged: boolean): void => {
         this.isLogged = isLogged;
-
         if (!isLogged) {
           this.userName = null;
           this.userService.clearUserInfo();
           return;
         }
-
         if (!this.userName) {
           this.userService.getUserInfo();
         }
@@ -49,16 +46,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.userService.userName$
       .pipe(takeUntil(this.destroy$))
-      .subscribe(name => {
+      .subscribe((name: string | null): void => {
         this.userName = name;
       });
   }
 
-  isActive(fragment: string):boolean {
+  protected isActive(fragment: string):boolean {
     return this.activeFragment === fragment;
   }
 
-  logout(): void {
+  protected logout(): void {
     this.authService.logout().subscribe({
       next: () => this.doLogout(),
       error: () => this.doLogout()
@@ -73,7 +70,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.router.navigate(['/']);
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }

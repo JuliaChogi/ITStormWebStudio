@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Params} from "@angular/router";
 import {environment} from "../../../../environments/environment";
 import {ArticleContentType, ArticleType} from "../../../../types";
 import {ArticleService} from "../../../shared";
@@ -13,7 +13,7 @@ import {ArticleService} from "../../../shared";
 
 export class ArticleComponent implements OnInit {
 
-  articleContent = {
+  protected articleContent = {
     text: '',
     comments: [''],
     commentsCount: 0,
@@ -26,24 +26,24 @@ export class ArticleComponent implements OnInit {
     url: ''
   };
 
-  relatedArticles: ArticleType[] = [];
-  serverStaticPath = environment.serverStaticPath;
+  protected relatedArticles: ArticleType[] = [];
+  protected serverStaticPath: string = environment.serverStaticPath;
 
-  constructor(private articleService: ArticleService,
-              private activatedRoute: ActivatedRoute
+  constructor(private readonly articleService: ArticleService,
+              private readonly activatedRoute: ActivatedRoute
   ) {
   }
 
-  ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params => {
+  public ngOnInit(): void {
+    this.activatedRoute.params.subscribe((params: Params): void => {
       this.articleService.getArticleContent(params['url'])
-        .subscribe((data: ArticleContentType) => {
+        .subscribe((data: ArticleContentType): void => {
           this.articleContent = data;
           this.articleService.getRelatedArticles(params['url'])
-            .subscribe((data: ArticleType[]) => {
+            .subscribe((data: ArticleType[]): void => {
               this.relatedArticles = data;
-            })
-        })
-    })
+            });
+        });
+    });
   }
 }

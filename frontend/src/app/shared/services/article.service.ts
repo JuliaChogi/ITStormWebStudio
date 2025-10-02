@@ -9,20 +9,20 @@ import {ActiveParamsType, ArticleCategoryType, ArticleContentType, ArticleType} 
 })
 export class ArticleService {
 
-  constructor(private http: HttpClient) {
+  constructor(private readonly http: HttpClient) {
   }
 
-  getTopArticles(): Observable<ArticleType[]> {
+  public getTopArticles(): Observable<ArticleType[]> {
     return this.http.get<ArticleType[]>(environment.api + 'articles/top');
   }
 
-  getArticles(params?: ActiveParamsType): Observable<{ count: number, pages: number, items: ArticleType[] }> {
+  public getArticles(params?: ActiveParamsType): Observable<{ count: number, pages: number, items: ArticleType[] }> {
     let httpParams = new HttpParams();
     if (params?.page) {
       httpParams = httpParams.set('page', params.page.toString());
     }
     if (params?.categories && params.categories.length) {
-      params.categories.forEach(cat => {
+      params.categories.forEach((cat: string): void => {
         httpParams = httpParams.append('categories[]', cat);
       });
     }
@@ -33,15 +33,15 @@ export class ArticleService {
     }>(environment.api + 'articles', {params: httpParams});
   }
 
-  getArticleContent(url: string): Observable<ArticleContentType> {
-    return this.http.get<ArticleContentType>(environment.api + 'articles/' + url)
+  public getArticleContent(url: string): Observable<ArticleContentType> {
+    return this.http.get<ArticleContentType>(environment.api + 'articles/' + url);
   }
 
-  getArticleCategories(): Observable<ArticleCategoryType[]> {
+  public getArticleCategories(): Observable<ArticleCategoryType[]> {
     return this.http.get<ArticleCategoryType[]>(environment.api + 'categories');
   }
 
-  getRelatedArticles(url: string): Observable<ArticleType[]> {
-    return this.http.get<ArticleType[]>(environment.api + 'articles/related/' + url)
+  public getRelatedArticles(url: string): Observable<ArticleType[]> {
+    return this.http.get<ArticleType[]>(environment.api + 'articles/related/' + url);
   }
 }
