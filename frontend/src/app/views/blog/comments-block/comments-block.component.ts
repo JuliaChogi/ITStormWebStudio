@@ -14,12 +14,12 @@ import {CommentService} from "../../../shared";
 export class CommentsBlockComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
-  comments: CommentType[] = [];
-  allCount = 0;
-  commentText = '';
-  isLogged = false;
+  protected comments: CommentType[] = [];
+  protected allCount: number = 0;
+  protected commentText: string = '';
+  protected isLogged: boolean = false;
 
-  private _articleId = '';
+  private _articleId: string = '';
   @Input()
   set articleId(value: string) {
     this._articleId = value;
@@ -28,37 +28,37 @@ export class CommentsBlockComponent implements OnInit, OnDestroy {
     }
   }
 
-  get articleId() {
+  public get articleId() {
     return this._articleId;
   }
 
-  @Input() commentsCount = 0;
+  @Input() commentsCount: number = 0;
 
   constructor(
-    private authService: AuthService,
-    private commentService: CommentService,
-    private _snackBar: MatSnackBar
+    private readonly authService: AuthService,
+    private readonly commentService: CommentService,
+    private readonly _snackBar: MatSnackBar
   ) {
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.authService.isLogged$
       .pipe(takeUntil(this.destroy$))
-      .subscribe(isLogged => this.isLogged = isLogged);
+      .subscribe((isLogged: boolean) => this.isLogged = isLogged);
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  loadComments(offset: number = 0): void {
+  private loadComments(offset: number = 0): void {
     if (!this.articleId) return;
 
     this.commentService.getComments(this.articleId, offset)
       .pipe(takeUntil(this.destroy$))
-      .subscribe(response => {
-        let newComments = response.comments;
+      .subscribe((response: { allCount: number; comments: CommentType[] }): void => {
+        let newComments: CommentType[] = response.comments;
 
         if (offset === 0) {
           this.comments = newComments.slice(0, 3);
@@ -69,16 +69,16 @@ export class CommentsBlockComponent implements OnInit, OnDestroy {
         this.allCount = response.allCount;
         this.commentService.getArticleCommentActions(this.articleId)
           .pipe(takeUntil(this.destroy$))
-          .subscribe(actions => {
+          .subscribe((actions: { comment: string; action: "like" | "dislike" }[]): void => {
             const actionsMap = new Map(actions.map(a => [a.comment, a.action]));
-            this.comments.forEach(comment => {
+            this.comments.forEach((comment: CommentType): void => {
               comment.userReaction = actionsMap.get(comment.id) || null;
             });
           });
       });
   }
 
-  onAddComment(): void {
+  protected onAddComment(): void {
     if (!this.commentText.trim()) return;
 
     this.commentService.addComment(this.articleId, this.commentText)
@@ -89,14 +89,14 @@ export class CommentsBlockComponent implements OnInit, OnDestroy {
           this.commentText = '';
           this.loadComments(0);
         },
-        error: (err) => {
+        error: (err): void => {
           this._snackBar.open(err);
           console.error('Ошибка добавления комментария', err);
         }
       });
   }
 
-  onCommentAction(comment: CommentType, action: 'like' | 'dislike' | 'violate'): void {
+  protected onCommentAction(comment: CommentType, action: 'like' | 'dislike' | 'violate'): void {
     if (this.isLogged) {
       this.commentService.applyAction(comment.id, action)
         .pipe(takeUntil(this.destroy$))
@@ -115,15 +115,15 @@ export class CommentsBlockComponent implements OnInit, OnDestroy {
             if (action !== 'violate') {
               this.commentService.getArticleCommentActions(this.articleId)
                 .pipe(takeUntil(this.destroy$))
-                .subscribe(actions => {
+                .subscribe((actions: { comment: string; action: "like" | "dislike" }[]) => {
                   const actionsMap = new Map(actions.map(a => [a.comment, a.action]));
-                  this.comments.forEach(c => {
+                  this.comments.forEach((c: CommentType): void => {
                     c.userReaction = actionsMap.get(c.id) || null;
                   });
                 });
             }
           },
-          error: (err) => {
+          error: (err): void => {
             if (action === 'violate' && err?.error?.message === 'Это действие уже применено к комментарию') {
               this._snackBar.open('Жалоба уже отправлена');
             } else {
@@ -136,7 +136,7 @@ export class CommentsBlockComponent implements OnInit, OnDestroy {
     }
   }
 
-  loadMoreComments(): void {
+  protected loadMoreComments(): void {
     this.loadComments(this.comments.length);
   }
 }

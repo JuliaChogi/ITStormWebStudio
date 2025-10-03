@@ -12,8 +12,8 @@ export class CommentService {
   constructor(private http: HttpClient) {
   }
 
-  getComments(articleId: string, offset: number): Observable<{ allCount: number, comments: CommentType[] }> {
-    let params = new HttpParams()
+  public getComments(articleId: string, offset: number): Observable<{ allCount: number, comments: CommentType[] }> {
+    let params: HttpParams = new HttpParams()
       .set('article', articleId)
       .set('offset', offset.toString());
 
@@ -23,7 +23,7 @@ export class CommentService {
     );
   }
 
-  addComment(articleId: string, text: string): Observable<DefaultResponseType> {
+  public addComment(articleId: string, text: string): Observable<DefaultResponseType> {
     return this.http.post<DefaultResponseType>(
       environment.api + 'comments',
       {
@@ -33,7 +33,7 @@ export class CommentService {
     );
   }
 
-  applyAction(commentId: string, action: 'like' | 'dislike' | 'violate'): Observable<{
+  public applyAction(commentId: string, action: 'like' | 'dislike' | 'violate'): Observable<{
     error: boolean,
     message: string
   }> {
@@ -43,10 +43,10 @@ export class CommentService {
     );
   }
 
-  getArticleCommentActions(articleId: string) {
+  public getArticleCommentActions(articleId: string) {
     return this.http.get<{ comment: string, action: 'like' | 'dislike' }[]>(
       `${environment.api}comments/article-comment-actions`,
-      { params: { articleId } }
+      {params: {articleId}}
     );
   }
 }

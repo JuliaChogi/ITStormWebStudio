@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 
 export type ModalType = 'consultation' | 'order' | 'success' | null;
@@ -10,17 +10,20 @@ export type ModalType = 'consultation' | 'order' | 'success' | null;
 
 export class ModalService {
   private modalTypeSubject = new BehaviorSubject<ModalType>(null);
-  modalType$ = this.modalTypeSubject.asObservable();
+  public modalType$ = this.modalTypeSubject.asObservable();
   private payloadSubject = new BehaviorSubject<any>(null);
-  payload$ = this.payloadSubject.asObservable();
-  open(type: ModalType, payload?: any) {
+  public payload$ = this.payloadSubject.asObservable();
+
+  public open(type: ModalType, payload?: any): void {
     this.payloadSubject.next(payload ?? null);
     this.modalTypeSubject.next(type);
   }
 
-  close() {
+  public close(): void {
     this.modalTypeSubject.next(null);
     this.payloadSubject.next(null);
   }
-  constructor() { }
+
+  constructor() {
+  }
 }

@@ -34,7 +34,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.articleService.getArticleCategories()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((data: ArticleCategoryType[]) => {
+      .subscribe((data: ArticleCategoryType[]): void => {
         this.articleCategories = data;
       });
 
@@ -62,7 +62,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
     this.articleService.getArticles(params)
       .pipe(takeUntil(this.destroy$), debounceTime(500))
       .subscribe({
-        next: response => {
+        next: (response: { count: number; pages: number; items: ArticleType[] }): void => {
           this.articles = response.items;
           this.pages = response.pages || 1;
           this.count = response.count || 0;
@@ -73,18 +73,18 @@ export class CatalogComponent implements OnInit, OnDestroy {
       });
   }
 
-  getCategoryNameByUrl(url: string): string {
-    const categoryName: ArticleCategoryType | undefined = this.articleCategories.find(x => x.url === url);
+  protected getCategoryNameByUrl(url: string): string {
+    const categoryName: ArticleCategoryType | undefined = this.articleCategories.find((x: ArticleCategoryType): boolean => x.url === url);
     return categoryName ? categoryName.name : url;
   }
 
-  isSelected(categoryUrl: string): boolean {
+  protected isSelected(categoryUrl: string): boolean {
     return this.selectedCategories.includes(categoryUrl);
   }
 
-  toggleCategory(categoryUrl: string): void {
+  protected toggleCategory(categoryUrl: string): void {
     if (this.isSelected(categoryUrl)) {
-      this.selectedCategories = this.selectedCategories.filter(cat => cat !== categoryUrl);
+      this.selectedCategories = this.selectedCategories.filter((cat: string): boolean => cat !== categoryUrl);
     } else {
       this.selectedCategories = [...this.selectedCategories, categoryUrl];
     }
@@ -93,11 +93,11 @@ export class CatalogComponent implements OnInit, OnDestroy {
     this.updateUrl();
   }
 
-  removeFilter(categoryUrl: string): void {
+  protected removeFilter(categoryUrl: string): void {
     this.toggleCategory(categoryUrl);
   }
 
-  updateUrl(): void {
+  private updateUrl(): void {
     const queryParams: Params = {};
 
     if (this.currentPage && this.currentPage !== 1) {
@@ -114,29 +114,29 @@ export class CatalogComponent implements OnInit, OnDestroy {
     });
   }
 
-  goToPage(page: number): void {
+  protected goToPage(page: number): void {
     if (page < 1 || page > this.pages || page === this.currentPage) return;
     this.currentPage = page;
     this.updateUrl();
   }
 
-  prevPage(): void {
+  protected prevPage(): void {
     if (this.currentPage > 1) this.goToPage(this.currentPage - 1);
   }
 
-  nextPage(): void {
+  protected nextPage(): void {
     if (this.currentPage < this.pages) this.goToPage(this.currentPage + 1);
   }
 
-  get pagesArray(): number[] {
-    return Array.from({length: this.pages}, (_, i) => i + 1);
+  protected get pagesArray(): number[] {
+    return Array.from({length: this.pages}, (_, i: number) => i + 1);
   }
 
-  closeDropdown() {
+  protected closeDropdown(): void {
     this.dropdownOpen = false;
   }
 
-  openDropdown() {
+  protected openDropdown(): void {
     this.dropdownOpen = true;
   }
 }

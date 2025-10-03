@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, Validators } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
@@ -13,24 +13,24 @@ import {DefaultResponseType, LoginResponseType} from "../../../../types";
 })
 export class LoginComponent {
 
-  loginForm = this.fb.group({
+  public loginForm = this.fb.group({
     email: ['', [Validators.email, Validators.required]],
     password: ['', [Validators.required]],
     rememberMe: [false]
   });
 
   constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private _snackBar: MatSnackBar,
-    private router: Router
+    private readonly fb: FormBuilder,
+    private readonly authService: AuthService,
+    private readonly _snackBar: MatSnackBar,
+    private readonly router: Router
   ) { }
 
-  login(): void {
+  public login(): void {
     if (this.loginForm.valid && this.loginForm.value.email && this.loginForm.value.password) {
-      const email = this.loginForm.value.email;
-      const password = this.loginForm.value.password;
-      const rememberMe = !!this.loginForm.value.rememberMe;
+      const email: string = this.loginForm.value.email;
+      const password: string = this.loginForm.value.password;
+      const rememberMe: boolean = !!this.loginForm.value.rememberMe;
 
       this.authService.login(email, password, rememberMe).subscribe({
         next: (data: LoginResponseType | DefaultResponseType) =>
@@ -40,10 +40,11 @@ export class LoginComponent {
             this.router,
             'Вы успешно авторизовались'
           ),
-        error: (err: HttpErrorResponse) => {
+        error: (err: HttpErrorResponse): void => {
           this._snackBar.open(err.error?.message || 'Ошибка авторизации');
         }
       });
     }
   }
+
 }

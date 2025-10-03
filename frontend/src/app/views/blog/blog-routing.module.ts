@@ -1,7 +1,8 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import {CatalogComponent} from "./catalog/catalog.component";
-import {ArticleComponent} from "./article/article.component";
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {CatalogComponent} from "./catalog";
+import {ArticleComponent} from "./article";
+
 
 const routes: Routes = [
   {path: 'blog', component: CatalogComponent},
@@ -12,4 +13,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class BlogRoutingModule { }
+export class BlogRoutingModule {
+}

@@ -2,7 +2,7 @@ import { Params } from '@angular/router';
 import {ActiveParamsType} from "../../../types";
 
 export class ActiveParamsUtil {
-  static processParams(params: Params): ActiveParamsType {
+  public static processParams(params: Params): ActiveParamsType {
     const activeParams: ActiveParamsType = { categories: [] };
     if (Object.prototype.hasOwnProperty.call(params, 'categories')) {
       activeParams.categories = Array.isArray(params['categories'])
