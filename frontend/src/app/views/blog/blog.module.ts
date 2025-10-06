@@ -6,7 +6,6 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {CatalogComponent} from "./catalog";
 import {ArticleComponent} from "./article";
-import {CommentsBlockComponent} from "./comments-block";
 import {SharedModule} from "../../shared";
 
 
@@ -14,7 +13,6 @@ import {SharedModule} from "../../shared";
   declarations: [
     CatalogComponent,
     ArticleComponent,
-    CommentsBlockComponent
   ],
   imports: [
     CommonModule,

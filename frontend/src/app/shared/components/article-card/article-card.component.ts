@@ -9,7 +9,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./article-card.component.scss']
 })
 export class ArticleCardComponent {
-  @Input() article!: ArticleType;
+  @Input() public article!: ArticleType;
   protected serverStaticPath: string = environment.serverStaticPath;
 
   constructor(private readonly router: Router) {
